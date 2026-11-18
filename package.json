@@ -1,0 +1,41 @@
+{
+  "name": "cws-source-proof",
+  "version": "1.0.0",
+  "description": "Zero-code-upload SHA-256 source-tree manifest generator and GitHub Action for Chrome Web Store extension provenance.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "bin": {
+    "cws-source-proof": "./bin/cws-source-proof.mjs"
+  },
+  "exports": {
+    ".": "./src/index.mjs"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "action.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test test/cws-source-proof.test.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tsujisound/cws-source-proof.git"
+  },
+  "homepage": "https://b2b-audit-dropzone-production.up.railway.app/open-source/cws-source-proof",
+  "keywords": [
+    "chrome-extension",
+    "manifest-v3",
+    "provenance",
+    "sha256",
+    "attestation",
+    "due-diligence",
+    "github-action"
+  ],
+  "dependencies": {}
+}

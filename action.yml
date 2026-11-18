@@ -1,0 +1,68 @@
+name: "Chrome Web Store Source-Proof Manifest"
+description: "Generate a zero-code SHA-256 source-tree manifest and optional Chrome Web Store self-attestation badge with zero npm dependencies."
+author: "Tsuji Sound"
+branding:
+  icon: "shield"
+  color: "green"
+
+inputs:
+  repo-dir:
+    description: "Target repository root directory to hash locally."
+    required: false
+    default: "."
+  out-file:
+    description: "Output path for the generated Source-Proof Manifest JSON."
+    required: false
+    default: "source-proof.json"
+  ignore-dirs:
+    description: "Comma-separated list of extra directory names to exclude."
+    required: false
+    default: ""
+  extension-id:
+    description: "Optional 32-character Chrome Web Store extension ID ([a-p]{32}) for attestation."
+    required: false
+    default: ""
+  publish-attestation:
+    description: "Set to 'true' to publish the zero-code manifest to the public attestation hub."
+    required: false
+    default: "false"
+  api-url:
+    description: "Base URL of the Source-Proof Attestation hub."
+    required: false
+    default: "https://b2b-audit-dropzone-production.up.railway.app"
+  oidc-audience:
+    description: "OIDC audience string used when requesting ambient GitHub Actions id-token."
+    required: false
+    default: "cws-source-proof"
+
+outputs:
+  manifest-path:
+    description: "Resolved path to the generated Source-Proof Manifest JSON."
+    value: ${{ steps.generate.outputs.manifest-path }}
+  root-sha256:
+    description: "Canonical SHA-256 root commitment of the inventoried source tree."
+    value: ${{ steps.generate.outputs.root-sha256 }}
+  badge-markdown:
+    description: "Markdown snippet for embedding the Self-Attested Source-Proof SVG badge."
+    value: ${{ steps.generate.outputs.badge-markdown }}
+  attestation-id:
+    description: "Attestation record identifier when publish-attestation is enabled."
+    value: ${{ steps.generate.outputs.attestation-id }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Generate Zero-Code Source-Proof Manifest
+      id: generate
+      shell: bash
+      env:
+        INPUT_REPO_DIR: ${{ inputs.repo-dir }}
+        INPUT_OUT_FILE: ${{ inputs.out-file }}
+        INPUT_IGNORE_DIRS: ${{ inputs.ignore-dirs }}
+        INPUT_EXTENSION_ID: ${{ inputs.extension-id }}
+        INPUT_PUBLISH_ATTESTATION: ${{ inputs.publish-attestation }}
+        INPUT_API_URL: ${{ inputs.api-url }}
+        INPUT_OIDC_AUDIENCE: ${{ inputs.oidc-audience }}
+      run: |
+        set -euo pipefail
+        node "${GITHUB_ACTION_PATH}/bin/cws-source-proof.mjs"

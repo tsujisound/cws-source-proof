@@ -1,0 +1,25 @@
+# Secrets & credentials (never commit)
+.env
+.env.*
+!.env.example
+.npmrc
+*.pem
+*.key
+*.pfx
+*.p12
+payment-config.json
+
+# Node & OS artifacts
+node_modules/
+coverage/
+*.log
+.DS_Store
+Thumbs.db
+
+# Generated local manifests
+source-proof.json
+source-proof-*.json
+*.sqlite
+*.sqlite-*
+*.db
+*.db-*
